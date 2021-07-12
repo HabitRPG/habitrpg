@@ -51,7 +51,7 @@
     "moment-recur": "^1.0.7",
     "mongoose": "^5.12.10",
     "morgan": "^1.10.0",
-    "nconf": "^0.11.2",
+    "nconf": "^0.11.3",
     "node-gcm": "^1.0.4",
     "on-headers": "^1.0.2",
     "passport": "^0.4.1",
