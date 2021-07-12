@@ -6,7 +6,7 @@
   "dependencies": {
     "@babel/core": "^7.14.3",
     "@babel/preset-env": "^7.14.4",
-    "@babel/register": "^7.13.16",
+    "@babel/register": "^7.14.5",
     "@google-cloud/trace-agent": "^5.1.3",
     "@parse/node-apn": "^4.1.1",
     "@slack/webhook": "^6.0.0",
