@@ -121,7 +121,7 @@
     "mocha": "^5.1.1",
     "monk": "^7.3.4",
     "require-again": "^2.0.0",
-    "run-rs": "^0.7.4",
+    "run-rs": "^0.7.5",
     "sinon": "^10.0.0",
     "sinon-chai": "^3.6.0",
     "sinon-stub-promise": "^4.0.0"
