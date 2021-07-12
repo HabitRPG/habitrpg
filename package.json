@@ -61,7 +61,7 @@
     "paypal-rest-sdk": "^1.8.1",
     "pp-ipn": "^1.1.0",
     "ps-tree": "^1.0.0",
-    "rate-limiter-flexible": "^2.2.2",
+    "rate-limiter-flexible": "^2.2.3",
     "redis": "^3.1.2",
     "regenerator-runtime": "^0.13.7",
     "remove-markdown": "^0.3.0",
