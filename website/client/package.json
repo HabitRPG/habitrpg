@@ -56,7 +56,7 @@
     "vue": "^2.6.12",
     "vue-cli-plugin-storybook": "^2.0.0",
     "vue-mugen-scroll": "^0.2.6",
-    "vue-router": "^3.5.1",
+    "vue-router": "^3.5.2",
     "vue-template-compiler": "^2.6.12",
     "vuedraggable": "^2.24.3",
     "vuejs-datepicker": "git://github.com/habitrpg/vuejs-datepicker.git#153d339e4dbebb73733658aeda1d5b7fcc55b0a0",
