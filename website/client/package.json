@@ -43,7 +43,7 @@
     "jquery": "^3.6.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
-    "nconf": "^0.11.2",
+    "nconf": "^0.11.3",
     "sass": "^1.34.0",
     "sass-loader": "^8.0.2",
     "smartbanner.js": "^1.16.0",
