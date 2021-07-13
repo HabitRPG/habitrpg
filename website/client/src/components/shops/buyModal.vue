@@ -537,7 +537,7 @@ export default {
         }
 
         const ownedPets = reduce(this.user.items.pets, (sum, petValue, petKey) => {
-          if (petKey.includes(this.item.key) && petValue > 0
+          if (petKey.match(new RegExp(`(-|^)${this.item.key}(-|$)`)) && petValue > 0
             && !petKey.includes('JackOLantern') // Jack-O-Lantern has "Ghost" version
             && !petKey.includes('RoyalPurple') // to avoid counting Royal Purple Gryphons for gryphon eggs
           ) return sum + 1;
@@ -545,7 +545,7 @@ export default {
         }, 0);
 
         const ownedMounts = reduce(this.user.items.mounts, (sum, mountValue, mountKey) => {
-          if (mountKey.includes(this.item.key) && mountValue === true
+          if (mountKey.match(new RegExp(`(-|^)${this.item.key}(-|$)`)) && mountValue === true
             && !mountKey.includes('JackOLantern')
             && !mountKey.includes('RoyalPurple')
           ) return sum + 1;
