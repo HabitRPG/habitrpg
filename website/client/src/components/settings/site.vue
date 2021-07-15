@@ -101,6 +101,7 @@
             <input
               v-model="user.preferences.advancedCollapsed"
               type="checkbox"
+              class="mr-2"
               @change="set('advancedCollapsed')"
             >
             <span
@@ -116,6 +117,7 @@
             <input
               v-model="user.preferences.dailyDueDefaultView"
               type="checkbox"
+              class="mr-2"
               @change="set('dailyDueDefaultView')"
             >
             <span
@@ -134,6 +136,7 @@
             <input
               v-model="user.preferences.displayInviteToPartyWhenPartyIs1"
               type="checkbox"
+              class="mr-2"
               @change="set('displayInviteToPartyWhenPartyIs1')"
             >
             <span
@@ -148,6 +151,7 @@
           <input
             v-model="user.preferences.suppressModals.levelUp"
             type="checkbox"
+            class="mr-2"
             @change="set('suppressModals', 'levelUp')"
           >
           <label>{{ $t('suppressLevelUpModal') }}</label>
@@ -156,6 +160,7 @@
           <input
             v-model="user.preferences.suppressModals.hatchPet"
             type="checkbox"
+            class="mr-2"
             @change="set('suppressModals', 'hatchPet')"
           >
           <label>{{ $t('suppressHatchPetModal') }}</label>
@@ -164,6 +169,7 @@
           <input
             v-model="user.preferences.suppressModals.raisePet"
             type="checkbox"
+            class="mr-2"
             @change="set('suppressModals', 'raisePet')"
           >
           <label>{{ $t('suppressRaisePetModal') }}</label>
@@ -172,6 +178,7 @@
           <input
             v-model="user.preferences.suppressModals.streak"
             type="checkbox"
+            class="mr-2"
             @change="set('suppressModals', 'streak')"
           >
           <label>{{ $t('suppressStreakModal') }}</label>

@@ -9,6 +9,7 @@
           <input
             v-model="user.preferences.pushNotifications.unsubscribeFromAll"
             type="checkbox"
+            class="mr-2"
             @change="set('pushNotifications', 'unsubscribeFromAll')"
           >
           <span>{{ $t('unsubscribeAllPush') }}</span>
@@ -20,6 +21,7 @@
           <input
             v-model="user.preferences.emailNotifications.unsubscribeFromAll"
             type="checkbox"
+            class="mr-2"
             @change="set('emailNotifications', 'unsubscribeFromAll')"
           >
           <span>{{ $t('unsubscribeAllEmails') }}</span>
