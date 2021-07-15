@@ -1,0 +1,3 @@
+@for $i from 0 through 29 {
+  @import url("../../src/assets/css/sprites/spritesmith-main-#{$i}.css");
+}
