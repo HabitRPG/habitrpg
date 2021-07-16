@@ -49,7 +49,7 @@ multi<template>
           :key="item.id"
           class="ignore-hide multi-item"
           :class="{ 'none': item.id === 'none', selectListItem: true }"
-          @click.prevent.stop="selectItem(item)"
+          @click="selectItem(item)"
         >
           <div
             v-markdown="item.name"
@@ -81,95 +81,95 @@ multi<template>
 </template>
 
 <style lang="scss">
-  @import '~@/assets/scss/colors.scss';
+@import '~@/assets/scss/colors.scss';
 
-  $itemHeight: 2rem;
+$itemHeight: 2rem;
 
-  .select-multi {
-    .dropdown-toggle {
-      padding-left: 0.75rem;
+.select-multi {
+  .dropdown-toggle {
+    padding-left: 0.75rem;
+  }
+
+  .dropdown-header {
+    background-color: $gray-700;
+    padding-bottom: 0;
+    min-height: 3rem;
+  }
+
+  .dropdown-item, .dropdown-header {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .none {
+    cursor: default;
+    pointer-events: none;
+  }
+
+  .multi-item button {
+    height: $itemHeight;
+    display: flex;
+
+    .label {
+      height: 1.5rem;
+      font-size: 14px;
+      line-height: 1.71;
+      flex: 1;
     }
 
-    .dropdown-header {
-      background-color: $gray-700;
-      padding-bottom: 0;
-      min-height: 3rem;
-    }
-
-    .dropdown-item, .dropdown-header {
-      padding-left: 0.75rem;
-      padding-right: 0.75rem;
-    }
-
-    .none {
-      cursor: default;
-      pointer-events: none;
-    }
-
-    .multi-item button {
-      height: $itemHeight;
-      display: flex;
-
-      .label {
-        height: 1.5rem;
-        font-size: 14px;
-        line-height: 1.71;
-        flex: 1;
-      }
-
-      .addl-text {
-        height: 1rem;
-        font-size: 12px;
-        font-weight: normal;
-        font-stretch: normal;
-        font-style: normal;
-        line-height: 1.33;
-        letter-spacing: normal;
-        text-align: right;
-        color: $gray-100;
-        align-self: center;
-        margin-top: 0.5rem;
-        margin-bottom: 0.5rem;
-        margin-right: 0.25rem;
-      }
-
-      &:hover {
-        .addl-text {
-          color: $purple-300;
-        }
-      }
-    }
-
-    .item-group {
-      max-height: #{5*$itemHeight};
-
-      &.add-new {
-        height: 30px;
-
-        .hint {
-          display: block;
-        }
-      }
-      &.scroll {
-        overflow-y: scroll;
-      }
-    }
-
-    .hint {
-      display: none;
-      height: 2rem;
+    .addl-text {
+      height: 1rem;
       font-size: 12px;
       font-weight: normal;
       font-stretch: normal;
       font-style: normal;
       line-height: 1.33;
       letter-spacing: normal;
+      text-align: right;
       color: $gray-100;
-
-      margin-left: 0.75rem;
+      align-self: center;
       margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+      margin-right: 0.25rem;
+    }
+
+    &:hover {
+      .addl-text {
+        color: $purple-300;
+      }
     }
   }
+
+  .item-group {
+    max-height: #{5*$itemHeight};
+
+    &.add-new {
+      height: 30px;
+
+      .hint {
+        display: block;
+      }
+    }
+    &.scroll {
+      overflow-y: scroll;
+    }
+  }
+
+  .hint {
+    display: none;
+    height: 2rem;
+    font-size: 12px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.33;
+    letter-spacing: normal;
+    color: $gray-100;
+
+    margin-left: 0.75rem;
+    margin-top: 0.5rem;
+  }
+}
 
 </style>
 
@@ -209,8 +209,8 @@ export default {
   },
   data () {
     return {
-      preventHide: true,
       isOpened: false,
+      wasTagAdded: false,
       selected: this.selectedItems,
       search: '',
     };
@@ -261,9 +261,12 @@ export default {
     closeSelectPopup () {
       this.preventHide = false;
       this.isOpened = false;
-      Vue.nextTick(() => {
-        this.$refs.dropdown.hide();
-      });
+      if (!this.wasTagAdded) {
+        Vue.nextTick(() => {
+          this.$refs.dropdown.hide();
+        });
+      }
+      this.wasTagAdded = false;
     },
     openOrClose ($event) {
       if (this.isOpened) {
@@ -277,12 +280,12 @@ export default {
     selectItem (item) {
       this.selectedItems.push(item.id);
       this.$emit('toggle', item.id);
+      this.preventHide = true;
+      this.wasTagAdded = true;
     },
     removeItem ($event) {
       const foundIndex = this.selectedItems.findIndex(t => t === $event);
-
       this.selectedItems.splice(foundIndex, 1);
-
       this.$emit('toggle', $event);
     },
     hideCallback ($event) {
@@ -290,12 +293,11 @@ export default {
         $event.preventDefault();
         return;
       }
-
       this.isOpened = false;
     },
     wasOpened () {
       this.isOpened = true;
-      this.preventHide = true;
+      this.preventHide = false;
     },
     handleEsc (e) {
       if (e.keyCode === 27) {
