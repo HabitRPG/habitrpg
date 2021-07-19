@@ -35,7 +35,7 @@
     "eslint": "^6.8.0",
     "eslint-config-habitrpg": "^6.2.0",
     "eslint-plugin-mocha": "^5.3.0",
-    "eslint-plugin-vue": "^6.2.2",
+    "eslint-plugin-vue": "^7.14.0",
     "habitica-markdown": "^3.0.0",
     "hellojs": "^1.19.3",
     "inspectpack": "^4.7.1",
