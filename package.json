@@ -49,7 +49,7 @@
     "method-override": "^3.0.0",
     "moment": "^2.29.1",
     "moment-recur": "^1.0.7",
-    "mongoose": "^5.12.10",
+    "mongoose": "^5.13.3",
     "morgan": "^1.10.0",
     "nconf": "^0.11.2",
     "node-gcm": "^1.0.4",
