@@ -8,6 +8,7 @@ import {
 import equip from './equip';
 import { removePinnedGearByClass } from './pinnedGearUtils';
 import isFreeRebirth from '../libs/isFreeRebirth';
+import setDebuffPotionItems from '../libs/setDebuffPotionItems';
 
 const USERSTATSLIST = ['per', 'int', 'con', 'str', 'points', 'gp', 'exp', 'mp'];
 
@@ -108,6 +109,7 @@ export default function rebirth (user, tasks = [], req = {}, analytics) {
   if (user.addNotification) user.addNotification('REBIRTH_ACHIEVEMENT');
 
   user.stats.buffs = {};
+  setDebuffPotionItems(user);
 
   return [
     { user, tasks },
