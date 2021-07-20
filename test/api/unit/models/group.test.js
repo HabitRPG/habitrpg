@@ -488,20 +488,6 @@ describe('Group Model', () => {
           expect(party.quest.progress.collect.soapBars).to.eq(5);
         });
 
-        it('does not drop an item if not need when on a collection quest', async () => {
-          party.quest.key = 'dilatoryDistress1';
-          party.quest.active = false;
-          await party.startQuest(questLeader);
-          party.quest.progress.collect.fireCoral = 20;
-          await party.save();
-
-          await Group.processQuestProgress(participatingMember, progress);
-
-          party = await Group.findOne({ _id: party._id });
-
-          expect(party.quest.progress.collect.fireCoral).to.eq(20);
-        });
-
         it('sends a chat message about progress', async () => {
           await Group.processQuestProgress(participatingMember, progress);
 
@@ -538,8 +524,8 @@ describe('Group Model', () => {
           });
         });
 
-        describe('collection quests with multiple items', () => {
-          it('sends a chat message if no progress is made on quest with multiple items', async () => {
+        describe('collection quests with multiple item types', () => {
+          it('sends a chat message if no progress is made', async () => {
             progress.collectedItems = 0;
             party.quest.key = 'dilatoryDistress1';
             party.quest.active = false;
@@ -607,6 +593,28 @@ describe('Group Model', () => {
             expect(party.quest.progress.collect.branches)
               .to.eql(questScrolls.evilsanta2.collect.branches.count);
           });
+        });
+
+        it('does not drop items when an item type becomes full', async () => {
+          progress.collectedItems = 20;
+          party.quest.key = 'dilatoryDistress1';
+          party.quest.active = false;
+
+          await party.startQuest(questLeader);
+          party.quest.progress.collect.fireCoral = 19;
+          await party.save();
+
+          await Group.processQuestProgress(participatingMember, progress);
+
+          party = await Group.findOne({ _id: party._id });
+
+          // There is a very small chance (~1 in 500K) that blueFins will
+          // be 19 or 20 due to randomness and not any bug. In these cases, this
+          // test doesn't actually verify anything, but it's rare enough that it
+          // shouldn't be a problem, and to make it deterministic would require
+          // stubbing out methods in implementation-specific ways.
+          expect(party.quest.progress.collect.fireCoral).to.be.within(19, 20);
+          expect(party.quest.progress.collect.blueFins).to.be.within(19, 20);
         });
 
         it('sends message about victory', async () => {

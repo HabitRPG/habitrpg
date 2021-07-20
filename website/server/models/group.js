@@ -1141,32 +1141,26 @@ schema.methods._processCollectionQuest = async function processCollectionQuest (
   const group = this;
   const quest = questScrolls[group.quest.key];
   const itemsFound = {};
-
-  const possibleItemKeys = Object.keys(quest.collect)
-    .filter(key => group.quest.progress.collect[key] < quest.collect[key].count);
-
-  const possibleItemsToCollect = possibleItemKeys.reduce((accumulator, current, index) => {
-    accumulator[possibleItemKeys[index]] = quest.collect[current];
-    return accumulator;
-  }, {});
-
-  _.times(progress.collectedItems, () => {
-    const item = shared.randomVal(possibleItemsToCollect, { key: true });
-
-    if (group.quest.progress.collect[item] < quest.collect[item].count) {
-      if (!itemsFound[item]) {
-        itemsFound[item] = 0;
-      }
-      itemsFound[item] += 1;
-      group.quest.progress.collect[item] += 1;
-    }
+  Object.keys(quest.collect).forEach(item => {
+    itemsFound[item] = 0;
   });
 
-  // Add 0 for all items not found
-  Object.keys(this.quest.progress.collect).forEach(item => {
-    if (!itemsFound[item]) {
-      itemsFound[item] = 0;
+  // Create an array of item names, one item name per item that still needs to
+  // be collected so that items are found proportionally to how many are needed.
+  const remainingItems = [].concat(...Object.keys(quest.collect).map(item => {
+    let count = quest.collect[item].count - (group.quest.progress.collect[item] || 0);
+    if (count < 0) { // This could only happen if there's a bug, but just in case.
+      count = 0;
     }
+    return Array(count).fill(item);
+  }));
+
+  // slice() will grab only what is available even if requested slice is larger
+  // than the array, so we don't need to worry about overfilling quest items.
+  const collectedItems = _.shuffle(remainingItems).slice(0, progress.collectedItems);
+  collectedItems.forEach(item => {
+    itemsFound[item] += 1;
+    group.quest.progress.collect[item] += 1;
   });
 
   let foundText = _.reduce(itemsFound, (m, v, k) => {
@@ -1186,22 +1180,20 @@ schema.methods._processCollectionQuest = async function processCollectionQuest (
   });
   group.markModified('quest.progress.collect');
 
-  // Still needs completing
-  const needsCompleted = _.find(quest.collect, (v, k) => group.quest.progress.collect[k] < v.count);
+  const promises = [group.save(), foundChat.save()];
 
-  if (needsCompleted) {
-    return Promise.all([group.save(), foundChat.save()]);
+  const questFinished = collectedItems.length === remainingItems.length;
+  if (questFinished) {
+    await group.finishQuest(quest);
+    const allItemsFoundChat = group.sendChat({
+      message: `\`${shared.i18n.t('chatItemQuestFinish', 'en')}\``,
+      info: {
+        type: 'all_items_found',
+      },
+    });
+
+    promises.push(allItemsFoundChat.save());
   }
-
-  await group.finishQuest(quest);
-  const allItemsFoundChat = group.sendChat({
-    message: `\`${shared.i18n.t('chatItemQuestFinish', 'en')}\``,
-    info: {
-      type: 'all_items_found',
-    },
-  });
-
-  const promises = [group.save(), foundChat.save(), allItemsFoundChat.save()];
 
   return Promise.all(promises);
 };
